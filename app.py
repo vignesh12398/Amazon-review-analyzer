@@ -185,12 +185,18 @@ button {
 """, unsafe_allow_html=True)
 
 st.sidebar.title("Amazon review analyzer")
-uploaded_file = st.sidebar.file_uploader("Choose a file", type=["csv"])
+df1 = pd.DataFrame()  # ✅ initialize so .empty works and avoids NameError
+
+uploaded_file = st.file_uploader("Upload Dataset (CSV)", type=["csv"])
 
 if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)  # ✅ fixed CSV read
-    df = preprocesor(df)             # ✅ fixed function call
-    st.write(df.head())
+    try:
+        df1 = pd.read_csv(uploaded_file) 
+        df = preprocesor(df)             # ✅ fixed function call
+        st.write(df.head())# load into df1 ✅
+    except Exception as e:
+        st.error("Failed to read CSV file!")  # ✅ fixed CSV read
+    
 
     # ✅ Detect user column
     possible_user_cols = ['reviewer', 'reviewer_name', 'profile', 'user', 'customer_name', 'name', 'user_name']
@@ -394,6 +400,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
