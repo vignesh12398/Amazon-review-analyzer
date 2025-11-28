@@ -194,39 +194,39 @@ if uploaded_file is not None:
     df1 = pd.read_csv(uploaded_file)  # ✅ fixed CSV read
     df1 = preprocesor(df1)
             # ✅ fixed function call
-    st.write(df.head())
+    st.write(df1.head())
 
     
 
     # ✅ Detect user column
     possible_user_cols = ['reviewer', 'reviewer_name', 'profile', 'user', 'customer_name', 'name', 'user_name']
     for col in possible_user_cols:
-       if col in df.columns:
-          df = df.rename(columns={col: 'user_name'})
+       if col in df1.columns:
+          df1 = df1.rename(columns={col: 'user_name'})
           break
 
     # ✅ Detect review text column
     possible_review_cols = ['review', 'review_text', 'content', 'feedback', 'comment', 'review_content']
     for col in possible_review_cols:
-       if col in df.columns:
-          df = df.rename(columns={col: 'review_content'})
+       if col in df1.columns:
+          df1 = df1.rename(columns={col: 'review_content'})
           break
 
     # ✅ Detect product column
     possible_product_cols = ['title', 'item', 'product_title', 'product', 'product_name']
     for col in possible_product_cols:
-       if col in df.columns:
-          df = df.rename(columns={col: 'product_name'})
+       if col in df1.columns:
+          df1 = df1.rename(columns={col: 'product_name'})
           break
 
     # ✅ Fill missing product/user columns if none detected to avoid later errors
-    if 'product_name' not in df.columns:
-       df['product_name'] = "Unknown Product"
-    if 'user_name' not in df.columns:
-       df['user_name'] = "Anonymous"
+    if 'product_name' not in df1.columns:
+       df1['product_name'] = "Unknown Product"
+    if 'user_name' not in df1.columns:
+       df1['user_name'] = "Anonymous"
 
     # ✅ Now safely build sidebar list
-    user_list = df['user_name'].unique().tolist()
+    user_list = df1['user_name'].unique().tolist()
     user_list = [u for u in map(str, user_list) if u.lower() not in ['nan', 'none', '']]
     user_list.sort()
     user_list.insert(0, "Overall")
@@ -400,6 +400,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
