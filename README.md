@@ -1,4 +1,4 @@
-# 🛍️ Amazon Review Analyzer 
+# 🛍️ Amazon Review Analyzer    link:https://amazon-review-analyzer-app.streamlit.app/
 
 A real-world  analytics dashboard built using **Python & Streamlit** to explore and analyse Amazon product reviews.  
 Instead of chat media/emoji timeline (WhatsApp tutorial style), this project focuses on **review intensity, rating trends, category insights, product popularity, sentiment-like tone, and review depth.**
