@@ -299,7 +299,8 @@ if uploaded_file is not None:
             st.dataframe(emoji_df, use_container_width=False)
        with col2:
            fig,ax=plt.subplots()
-           ax.pie(emoji_df[1].head(),labels=emoji_df[0].head(),autopct="%0.2f")
+           ax.pie(emoji_df['count'].head(), labels=emoji_df['emoji'].head(), autopct='%1.1f%%')
+
            st.pyplot(fig)
 
            ###########################################
@@ -383,6 +384,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
