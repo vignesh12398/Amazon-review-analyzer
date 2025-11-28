@@ -279,6 +279,8 @@ if uploaded_file is not None:
            df_wc=helper.create(selected_user, df)
            fig,ax=plt.subplots()
            ax.imshow(df_wc)
+           ax.axis("off")           # ✅ Prevent bbox errors
+           plt.tight_layout() 
            st.pyplot(fig)
 
        timeline = helper.timeline(selected_user, df1)
@@ -295,7 +297,7 @@ if uploaded_file is not None:
        st.pyplot(fig)
 
 
-       emoji_df=helper.emoji(selected_user, df)
+       emoji_df=helper.emoji(selected_user, df1)
        st.title("Emoji analyzer")
        col1,col2=st.columns(2)
        with col1:
@@ -303,7 +305,7 @@ if uploaded_file is not None:
        with col2:
            fig,ax=plt.subplots()
            ax.pie(emoji_df['count'].head(), labels=emoji_df['emoji'].head(), autopct='%1.1f%%')
-
+           plt.tight_layout()  
            st.pyplot(fig)
 
            ###########################################
@@ -387,6 +389,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
