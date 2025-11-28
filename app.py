@@ -4,6 +4,184 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import helper  # contains all helper functions
 from preprocessor import preprocesor 
+st.markdown("""
+<style>
+
+/* ---- ✅ MAIN PAGE BACKGROUND ---- */
+.stApp {
+    background: #0e1117;
+}
+
+/* ---- ✅ SIDEBAR BACKGROUND ---- */
+section[data-testid="stSidebar"] {
+    background: #161b22;
+    border-right: 2px solid #2d3748;
+    padding-top: 10px;
+}
+
+/* ---- Sidebar Text Styling ---- */
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] label {
+    color: #e2e8f0;
+    font-weight: 500;
+}
+
+/* ---- Reduce extra space in main content ---- */
+.block-container {
+    padding-top: 25px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+/* ---- Make upload box clean ---- */
+div[data-testid="stFileUploader"] {
+    background: rgba(255,255,255,0.08);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px dashed #2563eb;
+}
+
+/* ---- Optional: scrollbar style for long sidebar ---- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #2563eb;
+}
+/* ---- Sidebar container ---- */
+section[data-testid="stSidebar"] {
+    background: #161b22;
+    border-right: 2px solid #3b82f6;
+    padding: 12px;
+}
+
+/* ---- Sidebar title ---- */
+section[data-testid="stSidebar"] h1 {
+    text-align: center;
+    font-size: 22px;
+    color: #3b82f6;
+    margin-bottom: 15px;
+}
+
+/* ---- Dropdown (selectbox) ---- */
+section[data-testid="stSidebar"] select {
+    background-color: #1f2937;
+    color: white;
+    border-radius: 6px;
+    border: 1px solid #3b82f6;
+    padding: 5px;
+}
+
+/* ---- Sidebar Buttons ---- */
+section[data-testid="stSidebar"] button {
+    width: 100%;
+    background: #2563eb;
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    font-weight: bold;
+    border: none;
+    transition: 0.3s;
+}
+
+section[data-testid="stSidebar"] button:hover {
+    background: #3b82f6;
+    box-shadow: 0 0 10px rgba(59,130,246,0.5);
+}
+
+/* ---- File uploader box ---- */
+section[data-testid="stSidebar"] div[data-testid="stFileUploader"] {
+    background: rgba(255,255,255,0.07);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px dashed #3b82f6;
+    text-align: center;
+}
+
+/* ---- Sidebar text labels ---- */
+section[data-testid="stSidebar"] label {
+    font-size: 14px;
+    color: #93c5fd;
+    font-weight: 600;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+
+/* ---- Main Page Background ---- */
+.stApp {
+    background-color: #0e1117;
+    color: white;
+}
+
+/* ---- Sidebar Styling ---- */
+[data-testid="stSidebar"] {
+    background: #161b22;
+    border-right: 2px solid #2d3748;
+}
+
+/* ---- Metric Card Styling ---- */
+[data-testid="stMetric"] {
+    background-color: #1e293b;
+    padding: 12px;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 0 8px rgba(56,189,248,0.25);
+}
+
+/* ---- Headings Glow ---- */
+h1, h2, h3 {
+    font-family: 'Poppins', sans-serif;
+    color: #60a5fa;
+}
+
+/* ---- Busy Products Table ---- */
+table {
+    font-size: 12px;
+    background: #1a202c;
+    border-radius: 6px;
+}
+
+/* ---- Buttons Styling ---- */
+button {
+    background: #2563eb;
+    color: white;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-weight: bold;
+}
+
+/* ---- Fix Wordcloud Centering ---- */
+.css-10trblm {
+    text-align: center;
+}
+
+/* ---- Improve dataframe containers ---- */
+[data-testid="stDataFrame"] {
+    border: 1px solid #2563eb;
+    border-radius: 10px;
+    padding: 5px;
+    background: #111827;
+}
+
+/* ---- Remove extra whitespace around plots ---- */
+.css-ocqkz7 {
+    gap: 1rem;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 
 df1 = pd.DataFrame()  # ✅ always initialize first
 
@@ -192,6 +370,7 @@ if uploaded_file is not None:
                 st.dataframe(tone_matrix)
         else:
             st.warning("No rating column found — skipping tone heatmap!")
+
 
 
 
