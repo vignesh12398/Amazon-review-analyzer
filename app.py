@@ -255,7 +255,7 @@ if uploaded_file is not None:
        if selected_user=='Overall':
 
           st.title('busy products')
-          x,new_df=helper.most(df)
+          x,new_df=helper.most(df1)
           fig,ax=plt.subplots()
           col1, col2 = st.columns(2)
           with col1:
@@ -266,8 +266,8 @@ if uploaded_file is not None:
              st.dataframe(new_df)
        if selected_user == 'Overall':
           st.title('category vs rating')
-          df['main_category'] = df['category'].apply(lambda x: x.split("|")[0])
-          category_rating = df.groupby('main_category')['rating'].mean().round(2)
+          df1['main_category'] = df1['category'].apply(lambda x: x.split("|")[0])
+          category_rating = df1.groupby('main_category')['rating'].mean().round(2)
           fig, ax = plt.subplots()
           col1 ,col2= st.columns(2)
           d = {'category': category_rating.index, 'rating': category_rating.values}
@@ -282,7 +282,7 @@ if uploaded_file is not None:
             st.error("Uploaded dataset has no rows! Please upload a valid dataset.")
        else:       
            st.title("Word Cloud")
-           df_wc=helper.create(selected_user, df)
+           df_wc=helper.create(selected_user, df1)
            fig,ax=plt.subplots()
            ax.imshow(df_wc)
            ax.axis("off")           # ✅ Prevent bbox errors
@@ -322,7 +322,7 @@ if uploaded_file is not None:
            ###########################################
 
        if selected_user == 'Overall':
-           if 'discounted_price' in df.columns and 'actual_price' in df.columns:
+           if 'discounted_price' in df1.columns and 'actual_price' in df1.columns:
                st.title("discounted_price vs actual price")
                fig, ax = plt.subplots(figsize=(8, 5))
                ax.scatter(df['discounted_price'], df['actual_price'], color='orange', marker='s')
@@ -340,15 +340,15 @@ if uploaded_file is not None:
            if 'discount_percentage' in df.columns :
                # ✅ Create main_category safely for entire dataframe
                if 'category' in df.columns:
-                   df['main_category'] = df['category'].apply(lambda x: str(x).split("|")[0])
+                   df1['main_category'] = df1['category'].apply(lambda x: str(x).split("|")[0])
                else:
-                   df['main_category'] = "Uncategorized"
+                   df1['main_category'] = "Uncategorized"
 
                st.title("top 5 products discount percentage")
                cat1 = df['main_category']
                cat1_unique = np.unique(cat1)  # NumPy way
                cat1_unique.tolist()
-               dta = df['discount_percentage'].head()
+               dta = df1['discount_percentage'].head()
                labels = cat1_unique[:len(dta)]
                fig, ax = plt.subplots()
                ax.pie(dta, labels=labels, autopct='%1.1f%%')
@@ -362,9 +362,9 @@ if uploaded_file is not None:
 
 
 
-       user_col = 'user_name' if 'user_name' in df.columns else None
+       user_col = 'user_name' if 'user_name' in df1.columns else None
        if selected_user != 'Overall':
-           df = df[df[user_col] == selected_user]
+           df1 = df1[df1[user_col] == selected_user]
        st.title("User vs Rating tone heatmap")
 
 
@@ -377,12 +377,12 @@ if uploaded_file is not None:
                return "Negative 😡"
 
 
-       df['rating_tone'] = df['rating'].astype(float).apply(rating_tone)
+       df1['rating_tone'] = df1['rating'].astype(float).apply(rating_tone)
        tone_matrix = pd.crosstab(df['product_name'], df['rating_tone'])
 
        # Optional: show only top 40 products for clean view
        if len(tone_matrix) > 40:
-           top_products = df['product_name'].value_counts().head(40).index
+           top_products = df1['product_name'].value_counts().head(40).index
            tone_matrix = tone_matrix.loc[top_products]
 
        # Plot heatmap
@@ -400,6 +400,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
