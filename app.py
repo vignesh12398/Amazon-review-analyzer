@@ -278,7 +278,8 @@ if uploaded_file is not None:
        ax.imshow(df_wc)
        st.pyplot(fig)
 
-       timeline=helper.timeline(selected_user, df)
+       timeline = helper.timeline(selected_user, df1)
+
        fig, ax = plt.subplots(figsize=(12, 5))
        ax.bar(timeline['review_timeline'].head(50),timeline['review_content'].head(50))
        plt.xlabel("Review Timeline (Rating–ReviewCount)")
@@ -380,3 +381,4 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
