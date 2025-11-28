@@ -282,7 +282,7 @@ if uploaded_file is not None:
 
 
        fig, ax = plt.subplots(figsize=(12, 5))
-      ax.bar(timeline['review_timeline'], timeline['review_count'])
+       ax.bar(timeline['review_timeline'], timeline['review_count'])
 
        plt.xlabel("Review Timeline (Rating–ReviewCount)")
        plt.ylabel("Number of Reviews")
@@ -383,5 +383,6 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
