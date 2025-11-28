@@ -280,33 +280,38 @@ if uploaded_file is not None:
            fig,ax=plt.subplots()
            ax.imshow(df_wc)
            ax.axis("off")           # ✅ Prevent bbox errors
-           plt.tight_layout() 
+           fig.tight_layout()
+
            st.pyplot(fig)
 
        timeline = helper.timeline(selected_user, df1)
 
-
-       fig, ax = plt.subplots(figsize=(12, 5))
-       ax.bar(timeline['review_timeline'], timeline['review_count'])
-
-       plt.xlabel("Review Timeline (Rating–ReviewCount)")
-       plt.ylabel("Number of Reviews")
-       plt.title("Review Trend Based on review_timeline column")
-       plt.xticks(rotation=45, ha='right')  # clean readable names ✅
-       plt.grid(True)
-       st.pyplot(fig)
+       if not timeline.empty and timeline['review_count'].sum() > 0:
+           fig, ax = plt.subplots(figsize=(12, 5))
+           ax.bar(timeline['review_timeline'], timeline['review_count'])
+    
+           plt.xlabel("Review Timeline (Rating–ReviewCount)")
+           plt.ylabel("Number of Reviews")
+           plt.title("Review Trend Based on review_timeline column")
+           plt.xticks(rotation=45, ha='right')  # clean readable names ✅
+           plt.grid(True)
+           fig.tight_layout()
+    
+           st.pyplot(fig)
 
 
        emoji_df=helper.emoji(selected_user, df1)
        st.title("Emoji analyzer")
        col1,col2=st.columns(2)
-       with col1:
-            st.dataframe(emoji_df, use_container_width=False)
-       with col2:
-           fig,ax=plt.subplots()
-           ax.pie(emoji_df['count'].head(), labels=emoji_df['emoji'].head(), autopct='%1.1f%%')
-           plt.tight_layout()  
-           st.pyplot(fig)
+      if emoji_df['count'].sum() > 0:
+           with col1:
+                st.dataframe(emoji_df, use_container_width=False)
+           with col2:
+               fig,ax=plt.subplots()
+               ax.pie(emoji_df['count'].head(), labels=emoji_df['emoji'].head(), autopct='%1.1f%%')
+               fig.tight_layout()
+     
+               st.pyplot(fig)
 
            ###########################################
 
@@ -389,6 +394,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
