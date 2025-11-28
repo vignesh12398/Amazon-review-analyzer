@@ -359,17 +359,25 @@ if uploaded_file is not None:
                 st.warning("Heatmap matrix is empty!")
             else:
                 fig, ax = plt.subplots(figsize=(4, 7))
-                ax.imshow(tone_matrix.values, aspect='auto')
+                img = ax.imshow(tone_matrix.values, aspect='auto')
+            
+                   # Axis labels
                 ax.set_xticks(range(len(tone_matrix.columns)))
                 ax.set_xticklabels(tone_matrix.columns, rotation=25)
+            
                 ax.set_yticks(range(len(tone_matrix.index)))
                 ax.set_yticklabels(tone_matrix.index, fontsize=8)
-                plt.colorbar(ax.imshow(tone_matrix.values, aspect='auto'), ax=ax, fraction=0.035, pad=0.02)
+            
+                 
+                plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
+
+       
                 fig.tight_layout()
                 st.pyplot(fig)
                 st.dataframe(tone_matrix)
         else:
             st.warning("No rating column found — skipping tone heatmap!")
+
 
 
 
