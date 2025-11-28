@@ -272,6 +272,9 @@ if uploaded_file is not None:
              st.pyplot(fig)
           with col2:
              st.dataframe(df1)
+       if df1.empty:
+            st.error("Uploaded dataset has no rows! Please upload a valid dataset.")
+       else:       
        st.title("Word Cloud")
        df_wc=helper.create(selected_user, df)
        fig,ax=plt.subplots()
@@ -384,6 +387,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
