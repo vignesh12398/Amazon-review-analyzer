@@ -275,11 +275,11 @@ if uploaded_file is not None:
        if df1.empty:
             st.error("Uploaded dataset has no rows! Please upload a valid dataset.")
        else:       
-       st.title("Word Cloud")
-       df_wc=helper.create(selected_user, df)
-       fig,ax=plt.subplots()
-       ax.imshow(df_wc)
-       st.pyplot(fig)
+           st.title("Word Cloud")
+           df_wc=helper.create(selected_user, df)
+           fig,ax=plt.subplots()
+           ax.imshow(df_wc)
+           st.pyplot(fig)
 
        timeline = helper.timeline(selected_user, df1)
 
@@ -387,6 +387,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
