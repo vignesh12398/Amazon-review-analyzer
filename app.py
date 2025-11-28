@@ -9,16 +9,10 @@ df1 = pd.DataFrame()  # ✅ always initialize first
 st.sidebar.title("Amazon Review Analyzer")
 uploaded_file = st.sidebar.file_uploader("Choose a file", type=["csv"])
 
-# ✅ Load & preprocess dataset safely
 if uploaded_file is not None:
-    try:
-        df1 = pd.read_csv(uploaded_file)
-        df1 = df1.dropna(how="all").fillna("")  # clean NaN
-        df1 = helper.preprocesor(df1)  # ✅ call correct function from helper
-        st.write("Dataset Preview:")
-        st.write(df1.head())
-    except Exception as e:
-        st.error("Failed to read the CSV file!")
+    df1 = pd.read_csv(uploaded_file)  # ✅ fixed CSV read
+    df1 = preprocesor(df1)             # ✅ fixed function call
+    st.write(df1.head())
 
     # ✅ Auto-Detect & rename columns
     # Detect user column
@@ -197,6 +191,7 @@ if uploaded_file is not None:
                 st.dataframe(tone_matrix)
         else:
             st.warning("No rating column found — skipping tone heatmap!")
+
 
 
 
