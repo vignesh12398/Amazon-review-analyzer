@@ -79,25 +79,44 @@ def create(selected_user, df):
     cloud = wc.generate(df[review_col].astype(str).str.cat(sep=" "))
     return cloud
 
-def emoji(selected_user,df):
-    if 'review_content' in df.columns:
-        review_col = 'review_content'
-    else:
-        # Try common alternatives without renaming the df
-        possible_review_cols = ['review', 'content', 'review_text', 'comment', 'feedback', 'clean_review']
-        review_col = None
-        for col in possible_review_cols:
-            if col in df.columns:
-                review_col = col
-                break
-    user_col = 'user_name' if 'user_name' in df.columns else None
-    if selected_user!='Overall':
+def emoji(selected_user, df):
+
+    # Auto-detect a text column
+    text_candidates = ['review_content', 'clean_review', 'review', 'text', 'reviews', 'message', 'content']
+    review_col = None
+
+    for col in text_candidates:
+        if col in df.columns:
+            review_col = col
+            break
+
+    if review_col is None:
+        # return empty dataframe instead of crashing
+        return pd.DataFrame({"emoji": ["❌ No text column found"], "count": [0]})
+
+    # Optional user filtering
+    user_col = df.columns[0]
+    if selected_user != "Overall" and selected_user in df[user_col].unique():
         df = df[df[user_col] == selected_user]
-    emojis = []
-    for review in df['review_content']:
-        emojis.extend([c for c in str(review) if em.is_emoji(c)])
-    emoji_df=pd.DataFrame(Counter(emojis).most_common(len(Counter(emojis))))
+
+    # Extract emojis safely
+    import re
+    emoji_pattern = re.compile("["
+        "\U0001F600-\U0001F64F"
+        "\U0001F300-\U0001F5FF"
+        "\U0001F680-\U0001F6FF"
+        "\U0001F1E0-\U0001F1FF"
+        "]+", flags=re.UNICODE)
+
+    all_emojis = []
+    for review in df[review_col].astype(str):
+        found = emoji_pattern.findall(review)
+        all_emojis.extend(found)
+
+    emoji_df = pd.Series(all_emojis).value_counts().reset_index()
+    emoji_df.columns = ['emoji', 'count']
     return emoji_df
+
 def timeline(selected_user, df):
     # auto detect count column
     count_candidates = ['rating_count', 'review_count', 'reviews', 'count']
@@ -125,3 +144,4 @@ def timeline(selected_user, df):
     review_timeline['review_timeline'] = review_timeline['rating'].astype(str)
     review_timeline = review_timeline.rename(columns={count_col: 'review_count'})
     return review_timeline
+
