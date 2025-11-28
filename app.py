@@ -337,9 +337,9 @@ if uploaded_file is not None:
 
        if selected_user == 'Overall':
 
-           if 'discount_percentage' in df.columns :
+           if 'discount_percentage' in df1.columns :
                # ✅ Create main_category safely for entire dataframe
-               if 'category' in df.columns:
+               if 'category' in df1.columns:
                    df1['main_category'] = df1['category'].apply(lambda x: str(x).split("|")[0])
                else:
                    df1['main_category'] = "Uncategorized"
@@ -400,6 +400,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
