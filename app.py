@@ -376,9 +376,29 @@ if uploaded_file is not None:
            else:
                return "Negative 😡"
 
-
-       df1['rating_tone'] = df1['rating'].astype(float).apply(rating_tone)
-       tone_matrix = pd.crosstab(df1['product_name'], df1['rating_tone'])
+# Auto-detect columns
+        name_candidates = ['product_name', 'product', 'item', 'product_title', 'name']
+        tone_candidates = ['rating_tone', 'review_tone', 'tone', 'sentiment']
+        
+        name_col = None
+        tone_col = None
+        
+        for col in name_candidates:
+            if col in df1.columns:
+                name_col = col
+                break
+        
+        for col in tone_candidates:
+            if col in df1.columns:
+                tone_col = col
+                break
+        
+        if name_col is None or tone_col is None:
+            st.error("Required columns for tone matrix not found in dataset!")
+        else:
+            tone_matrix = pd.crosstab(df1[name_col], df1[tone_col])
+            st.dataframe(tone_matrix)
+    
 
        # Optional: show only top 40 products for clean view
        if len(tone_matrix) > 40:
@@ -400,6 +420,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
