@@ -378,7 +378,7 @@ if uploaded_file is not None:
 
 
        df1['rating_tone'] = df1['rating'].astype(float).apply(rating_tone)
-       tone_matrix = pd.crosstab(df['product_name'], df['rating_tone'])
+       tone_matrix = pd.crosstab(df1['product_name'], df1['rating_tone'])
 
        # Optional: show only top 40 products for clean view
        if len(tone_matrix) > 40:
@@ -400,6 +400,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
