@@ -1,6 +1,6 @@
-# 🛍️ Amazon Review Analyzer — NLP Insights Dashboard
+# 🛍️ Amazon Review Analyzer 
 
-A real-world NLP analytics dashboard built using **Python & Streamlit** to explore and analyse Amazon product reviews.  
+A real-world  analytics dashboard built using **Python & Streamlit** to explore and analyse Amazon product reviews.  
 Instead of chat media/emoji timeline (WhatsApp tutorial style), this project focuses on **review intensity, rating trends, category insights, product popularity, sentiment-like tone, and review depth.**
 
 ---
