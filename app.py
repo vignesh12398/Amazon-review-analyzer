@@ -190,12 +190,11 @@ df1 = pd.DataFrame()  # ✅ initialize so .empty works and avoids NameError
 uploaded_file = st.file_uploader("Upload Dataset (CSV)", type=["csv"])
 
 if uploaded_file is not None:
-    try:
+    
         df1 = pd.read_csv(uploaded_file) 
         df = preprocesor(df)             # ✅ fixed function call
         st.write(df.head())# load into df1 ✅
-    except Exception as e:
-        st.error("Failed to read CSV file!")  # ✅ fixed CSV read
+    # ✅ fixed CSV read
     
 
     # ✅ Detect user column
