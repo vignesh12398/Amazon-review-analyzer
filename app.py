@@ -359,7 +359,7 @@ if uploaded_file is not None:
                 st.warning("Heatmap matrix is empty!")
             else:
                 if len(tone_matrix) > 40:
-                       top_products = df['product_name'].value_counts().head(40).index
+                       top_products = df1['product_name'].value_counts().head(40).index
                        tone_matrix = tone_matrix.loc[top_products]
                 fig, ax = plt.subplots(figsize=(4, 7))
                 img = ax.imshow(tone_matrix.values, aspect='auto')
@@ -380,6 +380,7 @@ if uploaded_file is not None:
                 st.dataframe(tone_matrix)
         else:
             st.warning("No rating column found — skipping tone heatmap!")
+
 
 
 
