@@ -56,25 +56,31 @@ def most(df):
     df=round((df['product_name'].value_counts() / df.shape[0]) * 100).reset_index().rename(columns=
                                                                                         {'count': 'percentage'})
     return x,df
-def create(selected_user,df):
-    # ✅ Detect review text column safely
-    if 'review_content' in df.columns:
-        review_col = 'review_content'
-    else:
-        # Try common alternatives without renaming the df
-        possible_review_cols = ['review', 'content', 'review_text', 'comment', 'feedback', 'clean_review']
-        review_col = None
-        for col in possible_review_cols:
-            if col in df.columns:
-                review_col = col
-                break
-    user_col = 'user_name' if 'user_name' in df.columns else None
+def create(selected_user, df):
+    # Try to auto-detect the review column
+    possible_cols = ['review', 'review_content', 'text', 'reviews', 'clean_review']
+    review_col = None
 
-    if selected_user!='Overall':
-        filtered_df = df[df[user_col] == selected_user]
-    wc=WordCloud(width=500,height=500,min_font_size=10,background_color='white')
-    df_wc=wc.generate(df[review_col].str.cat(sep=" "))
+    for col in possible_cols:
+        if col in df.columns:
+            review_col = col
+            break
+
+    # If no valid column found, return empty image or warning text
+    if review_col is None:
+        wc = WordCloud(width=500, height=500, background_color="white")
+        return wc.generate("No review column found in dataset")
+
+    # Filter for user if needed
+    if selected_user != 'Overall':
+        if selected_user in df[df.columns[0]].unique():  # simple fallback user filter
+            df = df[df[df.columns[0]] == selected_user]
+
+    # Generate wordcloud
+    wc = WordCloud(width=500, height=500, min_font_size=10, background_color="white")
+    df_wc = wc.generate(df[review_col].astype(str).str.cat(sep=" "))
     return df_wc
+
 def emoji(selected_user,df):
     if 'review_content' in df.columns:
         review_col = 'review_content'
@@ -122,4 +128,5 @@ def timeline(selected_user,df):
     review_timeline['review_timeline'] = review_timeline.apply(
         lambda row: f"{row['rating']}-{int(row['rating_count'])}", axis=1
     )
+
     return review_timeline
