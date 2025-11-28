@@ -280,8 +280,10 @@ if uploaded_file is not None:
 
        timeline = helper.timeline(selected_user, df1)
 
+
        fig, ax = plt.subplots(figsize=(12, 5))
-       ax.bar(timeline['review_timeline'].head(50),timeline['review_content'].head(50))
+      ax.bar(timeline['review_timeline'], timeline['review_count'])
+
        plt.xlabel("Review Timeline (Rating–ReviewCount)")
        plt.ylabel("Number of Reviews")
        plt.title("Review Trend Based on review_timeline column")
@@ -381,4 +383,5 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
