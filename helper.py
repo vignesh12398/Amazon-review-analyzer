@@ -56,8 +56,11 @@ def most(df):
     df=round((df['product_name'].value_counts() / df.shape[0]) * 100).reset_index().rename(columns=
                                                                                         {'count': 'percentage'})
     return x,df
-def create(selected_user, df):
-    # auto-detect text/review column
+from wordcloud import WordCloud
+import pandas as pd
+
+def create_wordcloud(selected_user, df):
+    # Auto-detect text column
     text_candidates = ['review_content', 'clean_review', 'review', 'text', 'reviews', 'message', 'content']
 
     review_col = None
@@ -66,18 +69,15 @@ def create(selected_user, df):
             review_col = col
             break
 
-    if review_col is None:
-        # prevent crash if no text column is found
-        wc = WordCloud(width=500, height=500, background_color="white")
+    # If no text column exists, return fallback instead of crashing
+    if review_col is None or not df[review_col].astype(str).str.strip().any():
+        wc = WordCloud(width=400, height=200, background_color="black")
         return wc.generate("No review/text column found in dataset!")
 
-    # optional user filter if first column is user-like
-    if selected_user != "Overall" and selected_user in df[df.columns[0]].unique():
-        df = df[df[df.columns[0]] == selected_user]
-
-    wc = WordCloud(width=500, height=500, min_font_size=10, background_color="white")
-    cloud = wc.generate(df[review_col].astype(str).str.cat(sep=" "))
-    return cloud
+    # Generate cloud
+    text = df[review_col].astype(str).str.cat(sep=" ")
+    wc = WordCloud(width=400, height=200, min_font_size=10, background_color="black")
+    return wc.generate(text)
 
 def emoji(selected_user, df):
 
@@ -144,4 +144,5 @@ def timeline(selected_user, df):
     review_timeline['review_timeline'] = review_timeline['rating'].astype(str)
     review_timeline = review_timeline.rename(columns={count_col: 'review_count'})
     return review_timeline
+
 
