@@ -303,7 +303,7 @@ if uploaded_file is not None:
        emoji_df=helper.emoji(selected_user, df1)
        st.title("Emoji analyzer")
        col1,col2=st.columns(2)
-      if emoji_df['count'].sum() > 0:
+       if emoji_df['count'].sum() > 0:
            with col1:
                 st.dataframe(emoji_df, use_container_width=False)
            with col2:
@@ -394,6 +394,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
