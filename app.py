@@ -187,14 +187,14 @@ button {
 st.sidebar.title("Amazon review analyzer")
 df1 = pd.DataFrame()  # ✅ initialize so .empty works and avoids NameError
 
-uploaded_file = st.file_uploader("Upload Dataset (CSV)", type=["csv"])
+st.sidebar.title("Amazon review analyzer")
+uploaded_file = st.sidebar.file_uploader("Choose a file", type=["csv"])
 
 if uploaded_file is not None:
-    
-        df1 = pd.read_csv(uploaded_file) 
-        df = preprocesor(df)             # ✅ fixed function call
-        st.write(df.head())# load into df1 ✅
-    # ✅ fixed CSV read
+    df1 = pd.read_csv(uploaded_file)  # ✅ fixed CSV read
+    df1 = preprocesor(df)             # ✅ fixed function call
+    st.write(df.head())
+
     
 
     # ✅ Detect user column
@@ -399,6 +399,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
