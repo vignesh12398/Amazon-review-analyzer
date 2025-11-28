@@ -235,7 +235,7 @@ if uploaded_file is not None:
 
     # Change inside your button block
     if st.sidebar.button('show analysis'):
-       num_messages, total_words, avg_rating,total_products = helper.fetch_stats(selected_user, df)
+       num_messages, total_words, avg_rating,total_products = helper.fetch_stats(selected_user, df1)
 
        # ✅ Round rating now so you can display later safely
 
@@ -400,6 +400,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
