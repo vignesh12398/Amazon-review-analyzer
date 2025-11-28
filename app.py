@@ -192,7 +192,8 @@ uploaded_file = st.sidebar.file_uploader("Choose a file", type=["csv"])
 
 if uploaded_file is not None:
     df1 = pd.read_csv(uploaded_file)  # ✅ fixed CSV read
-    df1 = preprocesor(df)             # ✅ fixed function call
+    df1 = preprocessor(df1)
+            # ✅ fixed function call
     st.write(df.head())
 
     
@@ -399,6 +400,7 @@ if uploaded_file is not None:
        plt.colorbar(img, ax=ax, fraction=0.035, pad=0.02)
 
        st.pyplot(fig)
+
 
 
 
