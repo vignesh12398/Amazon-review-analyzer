@@ -57,29 +57,27 @@ def most(df):
                                                                                         {'count': 'percentage'})
     return x,df
 def create(selected_user, df):
-    # Try to auto-detect the review column
-    possible_cols = ['review', 'review_content', 'text', 'reviews', 'clean_review']
-    review_col = None
+    # auto-detect text/review column
+    text_candidates = ['review_content', 'clean_review', 'review', 'text', 'reviews', 'message', 'content']
 
-    for col in possible_cols:
+    review_col = None
+    for col in text_candidates:
         if col in df.columns:
             review_col = col
             break
 
-    # If no valid column found, return empty image or warning text
     if review_col is None:
+        # prevent crash if no text column is found
         wc = WordCloud(width=500, height=500, background_color="white")
-        return wc.generate("No review column found in dataset")
+        return wc.generate("No review/text column found in dataset!")
 
-    # Filter for user if needed
-    if selected_user != 'Overall':
-        if selected_user in df[df.columns[0]].unique():  # simple fallback user filter
-            df = df[df[df.columns[0]] == selected_user]
+    # optional user filter if first column is user-like
+    if selected_user != "Overall" and selected_user in df[df.columns[0]].unique():
+        df = df[df[df.columns[0]] == selected_user]
 
-    # Generate wordcloud
     wc = WordCloud(width=500, height=500, min_font_size=10, background_color="white")
-    df_wc = wc.generate(df[review_col].astype(str).str.cat(sep=" "))
-    return df_wc
+    cloud = wc.generate(df[review_col].astype(str).str.cat(sep=" "))
+    return cloud
 
 def emoji(selected_user,df):
     if 'review_content' in df.columns:
@@ -101,36 +99,29 @@ def emoji(selected_user,df):
     emoji_df=pd.DataFrame(Counter(emojis).most_common(len(Counter(emojis))))
     return emoji_df
 def timeline(selected_user, df):
-
-    # Auto detect review count column
-    possible_count_cols = ['rating_count', 'review_count', 'ratingCount', 'reviews', 'count']
-    user_col = df.columns[0]  # fallback for user filter
+    # auto detect count column
+    count_candidates = ['rating_count', 'review_count', 'reviews', 'count']
     count_col = None
-
-    for col in possible_count_cols:
+    for col in count_candidates:
         if col in df.columns:
             count_col = col
             break
 
-    # If no count column found, create dummy timeline so app doesn't crash
+    if 'rating' not in df.columns:
+        # if rating column itself is missing
+        df['rating'] = "N/A"
+
     if count_col is None:
-        dummy = pd.DataFrame({
-            'review_timeline': df['rating'].astype(str).head(),
-            'review_count': [1] * min(5, df.shape[0])
-        })
-        return dummy
+        # fallback dummy output
+        out = df.groupby('rating').size().reset_index(name='review_count')
+        out['review_timeline'] = out['rating'].astype(str)
+        return out
 
-    # Filter user if needed
-    if selected_user != 'Overall' and selected_user in df[user_col].unique():
-        df = df[df[user_col] == selected_user]
+    # user filter (safe)
+    if selected_user != "Overall" and selected_user in df[df.columns[0]].unique():
+        df = df[df[df.columns[0]] == selected_user]
 
-    # Group timeline using detected count column
     review_timeline = df.groupby('rating')[count_col].sum().reset_index()
-
-    # Rename for app compatibility
     review_timeline['review_timeline'] = review_timeline['rating'].astype(str)
     review_timeline = review_timeline.rename(columns={count_col: 'review_count'})
-
     return review_timeline
-
-
