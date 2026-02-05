@@ -385,25 +385,23 @@ if uploaded_file is not None:
 
 model, vectorizer = helper.train_sentiment_model(df)
 
+if uploaded_file is not None:
 
-st.title("Sentiment Prediction (ML Model)")
+    # ML Training
+    if "model" not in st.session_state:
+        st.session_state.model, st.session_state.vectorizer = helper.train_sentiment_model(df)
 
-user_review = st.text_area("Enter a review to predict sentiment")
+    st.title("Sentiment Prediction (ML Model)")
 
-if st.button("Predict Sentiment"):
+    user_review = st.text_area("Enter a review")
 
-   if user_review.strip() != "":
-       review_vector = vectorizer.transform([user_review]).toarray()
-       prediction = model.predict(review_vector)
+    if st.button("Predict Sentiment"):
 
-       st.success(f"Predicted Sentiment: {prediction[0]}")
+        if user_review.strip() != "":
+            review_vector = st.session_state.vectorizer.transform([user_review]).toarray()
+            prediction = st.session_state.model.predict(review_vector)
 
-
-
-
-
-
-
+            st.success(f"Predicted Sentiment: {prediction[0]}")
 
 
 
