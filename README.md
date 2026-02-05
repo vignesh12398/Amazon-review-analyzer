@@ -1,7 +1,9 @@
-# 🛍️ Amazon Review Analyzer    link:https://amazon-review-analyzer-app.streamlit.app/
+# 🛍️ Amazon Review Analyzer  
+🔗 Live App: https://amazon-review-analyzer-app.streamlit.app/
 
-A real-world  analytics dashboard built using **Python & Streamlit** to explore and analyse Amazon product reviews.  
-Instead of chat media/emoji timeline (WhatsApp tutorial style), this project focuses on **review intensity, rating trends, category insights, product popularity, sentiment-like tone, and review depth.**
+A real-world analytics dashboard built using **Python, Streamlit & Machine Learning** to explore and analyse Amazon product reviews.
+
+This project extends traditional review analytics by integrating **Natural Language Processing (NLP)** and **Machine Learning-based Sentiment Prediction**.
 
 ---
 
@@ -13,51 +15,74 @@ Instead of chat media/emoji timeline (WhatsApp tutorial style), this project foc
 - **Average Rating (2 decimal precision)**
 - **Number of Unique Products Reviewed**
 
+---
+
 ### 🔍 User-Level Filters
 - Dropdown to analyse by:
   - `Overall`
   - or any **reviewer/user column name** auto-detected from dataset  
     *(supports datasets using `user_name`, `review.user_name`, `reviewer`, `username`, `author`, etc.)*
 
+---
+
 ### 🔥 Visual Analysis
 - **Category vs Avg Rating Chart**
 - **Most Reviewed Products**
 - **Review Length Distribution**
-- **Rating Tone (Positive/Neutral/Negative Buckets)**
-- **Generosity/Harshness Index for Reviewers**
+- **Rating Tone (Positive / Neutral / Negative Buckets)**
 - **Discount Impact on Ratings**
-- **Heatmap: User × Rating Tone Intensity**
+- **Heatmap: Product × Rating Tone Intensity**
+- **Word Cloud of Review Text**
+- **Emoji Analysis of Reviews**
+- **Review Timeline Trends**
+
+---
+
+## 🤖 Machine Learning Integration
+
+### 🧠 Sentiment Prediction Model
+The project includes a real-time NLP pipeline that predicts sentiment from user-entered reviews.
+
+#### ML Pipeline:
+1. Text Cleaning using Regex & BeautifulSoup  
+2. Feature Extraction using **CountVectorizer (Bag-of-Words)**  
+3. Sentiment Classification using **Logistic Regression**  
+4. Live prediction via Streamlit UI  
+
+#### Sentiment Classes:
+- Positive 😊
+- Neutral 😐
+- Negative 😡
 
 ---
 
 ## 🧠 Why this project is unique?
 
-| Tutorial Style | This Project |
+| Basic Tutorials | This Project |
 |---|---|
-| WhatsApp chat timeline, emoji stats | Amazon reviews trend by ratings, categories, discounts |
-| Message media data | Product performance & reviewer behaviour |
-| Time-based heatmaps | Rating-intensity heatmaps & theme detection |
-
-**You work with reviews that already exist in CSV, cleaning + analysing without timestamp dependency.**
+| Static data charts | Interactive analytics dashboard |
+| Pure visualization | Visualization + NLP + ML |
+| Offline ML models | Live prediction web app |
+| Chat dataset analysis | E-commerce product review intelligence |
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Python 3.12 / 3.11**
-- **Pandas & NumPy** for data processing
-- **BeautifulSoup & Regex** for text cleaning
-- **Streamlit** for interactive UI
-- **Matplotlib** for charts
-- Optional extension: sentiment or ML models can be added later
+- **Python 3.11 / 3.12**
+- **Pandas & NumPy** – Data processing
+- **BeautifulSoup & Regex** – Text preprocessing
+- **Streamlit** – Interactive dashboard UI
+- **Matplotlib** – Visualizations
+- **Scikit-learn** – Machine Learning & NLP
 
 ---
 
 ## 📦 Installation
 
-1. Clone the project
-2. Create and activate a virtual environment
-3. Install required dependencies:
-
+### 1️⃣ Clone Repository
 ```bash
+git clone <your_repo_link>
+cd amazon-review-analyzer
+
 pip install -r requirements.txt
