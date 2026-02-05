@@ -389,7 +389,7 @@ if uploaded_file is not None:
 
     # ML Training
     if "model" not in st.session_state:
-        st.session_state.model, st.session_state.vectorizer = helper.train_sentiment_model(df)
+        st.session_state.model, st.session_state.vectorizer = helper.train_sentiment_model(df1)
 
     st.title("Sentiment Prediction (ML Model)")
 
@@ -402,6 +402,7 @@ if uploaded_file is not None:
             prediction = st.session_state.model.predict(review_vector)
 
             st.success(f"Predicted Sentiment: {prediction[0]}")
+
 
 
 
