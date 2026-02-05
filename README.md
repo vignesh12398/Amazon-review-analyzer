@@ -3,7 +3,7 @@
 
 A real-world analytics dashboard built using **Python, Streamlit & Machine Learning** to explore and analyse Amazon product reviews.
 
-This project extends traditional review analytics by integrating **Natural Language Processing (NLP)** and **Machine Learning-based Sentiment Prediction**.
+This project extends traditional review analytics by integrating **Data Analaysis** and **Machine Learning-based Sentiment Prediction**.
 
 ---
 
@@ -61,7 +61,7 @@ The project includes a real-time NLP pipeline that predicts sentiment from user-
 | Basic Tutorials | This Project |
 |---|---|
 | Static data charts | Interactive analytics dashboard |
-| Pure visualization | Visualization + NLP + ML |
+| Pure visualization | Visualization  + ML |
 | Offline ML models | Live prediction web app |
 | Chat dataset analysis | E-commerce product review intelligence |
 
@@ -74,7 +74,7 @@ The project includes a real-time NLP pipeline that predicts sentiment from user-
 - **BeautifulSoup & Regex** – Text preprocessing
 - **Streamlit** – Interactive dashboard UI
 - **Matplotlib** – Visualizations
-- **Scikit-learn** – Machine Learning & NLP
+- **Scikit-learn** – Machine Learning 
 
 ---
 
