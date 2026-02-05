@@ -56,93 +56,87 @@ def most(df):
     df=round((df['product_name'].value_counts() / df.shape[0]) * 100).reset_index().rename(columns=
                                                                                         {'count': 'percentage'})
     return x,df
-from wordcloud import WordCloud
-import pandas as pd
+def create(selected_user,df):
+    # ✅ Detect review text column safely
+    if 'review_content' in df.columns:
+        review_col = 'review_content'
+    else:
+        # Try common alternatives without renaming the df
+        possible_review_cols = ['review', 'content', 'review_text', 'comment', 'feedback', 'clean_review']
+        review_col = None
+        for col in possible_review_cols:
+            if col in df.columns:
+                review_col = col
+                break
+    user_col = 'user_name' if 'user_name' in df.columns else None
 
-def create_wordcloud(selected_user, df):
-    # Auto-detect text column
-    text_candidates = ['review_content', 'clean_review', 'review', 'text', 'reviews', 'message', 'content']
-
-    review_col = None
-    for col in text_candidates:
-        if col in df.columns:
-            review_col = col
-            break
-
-    # If no text column exists, return fallback instead of crashing
-    if review_col is None or not df[review_col].astype(str).str.strip().any():
-        wc = WordCloud(width=400, height=200, background_color="black")
-        return wc.generate("No review/text column found in dataset!")
-
-    # Generate cloud
-    text = df[review_col].astype(str).str.cat(sep=" ")
-    wc = WordCloud(width=400, height=200, min_font_size=10, background_color="black")
-    return wc.generate(text)
-
-def emoji(selected_user, df):
-
-    # Auto-detect a text column
-    text_candidates = ['review_content', 'clean_review', 'review', 'text', 'reviews', 'message', 'content']
-    review_col = None
-
-    for col in text_candidates:
-        if col in df.columns:
-            review_col = col
-            break
-
-    if review_col is None:
-        # return empty dataframe instead of crashing
-        return pd.DataFrame({"emoji": ["❌ No text column found"], "count": [0]})
-
-    # Optional user filtering
-    user_col = df.columns[0]
-    if selected_user != "Overall" and selected_user in df[user_col].unique():
+    if selected_user!='Overall':
+        filtered_df = df[df[user_col] == selected_user]
+    wc=WordCloud(width=500,height=500,min_font_size=10,background_color='white')
+    df_wc=wc.generate(df[review_col].str.cat(sep=" "))
+    return df_wc
+def emoji(selected_user,df):
+    if 'review_content' in df.columns:
+        review_col = 'review_content'
+    else:
+        # Try common alternatives without renaming the df
+        possible_review_cols = ['review', 'content', 'review_text', 'comment', 'feedback', 'clean_review']
+        review_col = None
+        for col in possible_review_cols:
+            if col in df.columns:
+                review_col = col
+                break
+    user_col = 'user_name' if 'user_name' in df.columns else None
+    if selected_user!='Overall':
         df = df[df[user_col] == selected_user]
-
-    # Extract emojis safely
-    import re
-    emoji_pattern = re.compile("["
-        "\U0001F600-\U0001F64F"
-        "\U0001F300-\U0001F5FF"
-        "\U0001F680-\U0001F6FF"
-        "\U0001F1E0-\U0001F1FF"
-        "]+", flags=re.UNICODE)
-
-    all_emojis = []
-    for review in df[review_col].astype(str):
-        found = emoji_pattern.findall(review)
-        all_emojis.extend(found)
-
-    emoji_df = pd.Series(all_emojis).value_counts().reset_index()
-    emoji_df.columns = ['emoji', 'count']
+    emojis = []
+    for review in df['review_content']:
+        emojis.extend([c for c in str(review) if em.is_emoji(c)])
+    emoji_df=pd.DataFrame(Counter(emojis).most_common(len(Counter(emojis))))
     return emoji_df
+def timeline(selected_user,df):
+    if 'review_content' in df.columns:
+        review_col = 'review_content'
+    else:
+        # Try common alternatives without renaming the df
+        possible_review_cols = ['review', 'content', 'review_text', 'comment', 'feedback', 'clean_review']
+        review_col = None
+        for col in possible_review_cols:
+            if col in df.columns:
+                review_col = col
+                break
+    user_col = 'user_name' if 'user_name' in df.columns else None
+    if selected_user!='Overall':
+        df = df[df[user_col] == selected_user]
+    # Rebuild timeline as DataFrame
+    review_timeline = df.groupby(['rating', 'rating_count']) \
+        .count()['review_content'] \
+        .reset_index()
 
-def timeline(selected_user, df):
-    # auto detect count column
-    count_candidates = ['rating_count', 'review_count', 'reviews', 'count']
-    count_col = None
-    for col in count_candidates:
-        if col in df.columns:
-            count_col = col
-            break
+    # Sort (optional)
+    review_timeline = review_timeline.sort_values(by='rating_count', ascending=False)
 
-    if 'rating' not in df.columns:
-        # if rating column itself is missing
-        df['rating'] = "N/A"
-
-    if count_col is None:
-        # fallback dummy output
-        out = df.groupby('rating').size().reset_index(name='review_count')
-        out['review_timeline'] = out['rating'].astype(str)
-        return out
-
-    # user filter (safe)
-    if selected_user != "Overall" and selected_user in df[df.columns[0]].unique():
-        df = df[df[df.columns[0]] == selected_user]
-
-    review_timeline = df.groupby('rating')[count_col].sum().reset_index()
-    review_timeline['review_timeline'] = review_timeline['rating'].astype(str)
-    review_timeline = review_timeline.rename(columns={count_col: 'review_count'})
+    # Now loop will work ✅
+    for i in range(review_timeline.shape[0]):
+        print(str(review_timeline['rating'][i]) + "-" + str(int(review_timeline['rating_count'][i])))
+    review_timeline['review_timeline'] = review_timeline.apply(
+        lambda row: f"{row['rating']}-{int(row['rating_count'])}", axis=1
+    )
     return review_timeline
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.linear_model import LogisticRegression
 
+def train_sentiment_model(df):
 
+    df['sentiment'] = df['rating'].apply(
+        lambda x: "Positive" if x >= 4 else ("Neutral" if x == 3 else "Negative")
+    )
+
+    cv = CountVectorizer(max_features=3000)
+    X = cv.fit_transform(df['clean_review']).toarray()
+    y = df['sentiment']
+
+    model = LogisticRegression()
+    model.fit(X, y)
+
+    return model, cv
