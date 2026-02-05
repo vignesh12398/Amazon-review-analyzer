@@ -383,6 +383,21 @@ if uploaded_file is not None:
 
 
 
+model, vectorizer = helper.train_sentiment_model(df)
+
+
+st.title("Sentiment Prediction (ML Model)")
+
+user_review = st.text_area("Enter a review to predict sentiment")
+
+if st.button("Predict Sentiment"):
+
+   if user_review.strip() != "":
+       review_vector = vectorizer.transform([user_review]).toarray()
+       prediction = model.predict(review_vector)
+
+       st.success(f"Predicted Sentiment: {prediction[0]}")
+
 
 
 
