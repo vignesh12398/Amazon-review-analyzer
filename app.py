@@ -383,7 +383,7 @@ if uploaded_file is not None:
 
 
 
-model, vectorizer = helper.train_sentiment_model(df)
+model, vectorizer = helper.train_sentiment_model(df1)
 
 if uploaded_file is not None:
 
@@ -402,6 +402,7 @@ if uploaded_file is not None:
             prediction = st.session_state.model.predict(review_vector)
 
             st.success(f"Predicted Sentiment: {prediction[0]}")
+
 
 
 
