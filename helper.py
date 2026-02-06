@@ -125,6 +125,10 @@ def timeline(selected_user,df):
     return review_timeline
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 
 def train_sentiment_model(df):
 
@@ -136,7 +140,32 @@ def train_sentiment_model(df):
     X = cv.fit_transform(df['clean_review']).toarray()
     y = df['sentiment']
 
-    model = LogisticRegression()
-    model.fit(X, y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    models = {
+        "Logistic Regression": (
+            LogisticRegression(max_iter=1000),
+            {"C": [0.1, 1, 10]}
+        ),
 
-    return model, cv
+        "Naive Bayes": (
+            MultinomialNB(),
+            {"alpha": [0.1, 0.5, 1]}
+        ),
+
+        "Random Forest": (
+            RandomForestClassifier(),
+            {"n_estimators": [50, 100], "max_depth": [None, 10]}
+        )
+    }
+    best_accuracy = 0
+    best_model = None
+    for names, (model,params) in models.items():
+        grid = GridSearchCV(model, params, cv=3)
+        grid.fit(X_train, y_train)
+        y_pred = grid.predict(X_test)
+        acc= accuracy_score(y_test, y_pred)
+        if acc>best_accuracy:
+                best_accuracy = acc
+                best_model = grid.best_estimator_
+
+    return best_model, cv,best_accuracy
