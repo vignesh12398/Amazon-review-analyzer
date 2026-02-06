@@ -406,11 +406,11 @@ if uploaded_file is not None:
             st.session_state.accuracy = accuracy
     
         st.success("Training Completed")
-  if st.session_state.model is not None:
+    if st.session_state.model is not None:
 
-    st.title("Sentiment Prediction (ML Model)")
-
-    user_review = st.text_area("Enter a review")
+        st.title("Sentiment Prediction (ML Model)")
+    
+        user_review = st.text_area("Enter a review")
 
     if st.button("Predict Sentiment"):
 
@@ -429,4 +429,5 @@ if uploaded_file is not None:
             st.info(f"Predicted Sentiment: {sentiment}")
 
         st.info(f"Model Accuracy: {st.session_state.accuracy * 100:.2f}%")
+
 
