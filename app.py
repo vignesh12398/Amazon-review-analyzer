@@ -398,7 +398,16 @@ if uploaded_file is not None:
                 review_vector = st.session_state.vectorizer.transform([user_review]).toarray()
                 prediction = st.session_state.model.predict(review_vector)
 
-                st.success(f"Predicted Sentiment: {prediction[0]}")
-                st.info(f"Model Accuracy: {st.session_state.accuracy * 100:.2f}%")
+                sentiment = prediction[0]
 
+                if sentiment == "Positive":
+                    st.success(f"Predicted Sentiment: {sentiment}")
+
+                elif sentiment == "Negative":
+                    st.error(f"Predicted Sentiment: {sentiment}")
+
+                else:
+                    st.info(f"Predicted Sentiment: {sentiment}")
+
+                st.info(f"Model Accuracy: {st.session_state.accuracy * 100:.2f}%")
 
