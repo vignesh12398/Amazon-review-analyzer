@@ -1,5 +1,4 @@
 # 🛍️ Amazon Review Analyzer  
-🔗 Live App: https://amazon-review-analyzer-app.streamlit.app/
 
 A real-world analytics dashboard built using **Python, Streamlit & Machine Learning** to explore and analyse Amazon product reviews.
 
@@ -46,8 +45,8 @@ The project includes a real-time NLP pipeline that predicts sentiment from user-
 #### ML Pipeline:
 1. Text Cleaning using Regex & BeautifulSoup  
 2. Feature Extraction using **CountVectorizer (Bag-of-Words)**  
-3. Sentiment Classification using **Logistic Regression**  
-4. Live prediction via Streamlit UI  
+3. Sentiment Classification using **hyperparameter tuning** 
+6. Live prediction via Streamlit UI  
 
 #### Sentiment Classes:
 - Positive 😊
