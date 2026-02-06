@@ -392,22 +392,41 @@ if uploaded_file is not None:
 
         user_review = st.text_area("Enter a review")
 
-        if st.button("Predict Sentiment"):
+    if "model" not in st.session_state:
+            st.session_state.model = None
 
-            if user_review.strip() != "":
-                review_vector = st.session_state.vectorizer.transform([user_review]).toarray()
-                prediction = st.session_state.model.predict(review_vector)
+    if st.button("Train Model"):
+    
+        with st.spinner("Training model..."):
+    
+            model, vectorizer, accuracy = helper.train_sentiment_model(df)
+    
+            st.session_state.model = model
+            st.session_state.vectorizer = vectorizer
+            st.session_state.accuracy = accuracy
+    
+        st.success("Training Completed")
+  if st.session_state.model is not None:
 
-                sentiment = prediction[0]
+    st.title("Sentiment Prediction (ML Model)")
 
-                if sentiment == "Positive":
-                    st.success(f"Predicted Sentiment: {sentiment}")
+    user_review = st.text_area("Enter a review")
 
-                elif sentiment == "Negative":
-                    st.error(f"Predicted Sentiment: {sentiment}")
+    if st.button("Predict Sentiment"):
 
-                else:
-                    st.info(f"Predicted Sentiment: {sentiment}")
+        review_vector = st.session_state.vectorizer.transform([user_review]).toarray()
+        prediction = st.session_state.model.predict(review_vector)
 
-                st.info(f"Model Accuracy: {st.session_state.accuracy * 100:.2f}%")
+        sentiment = prediction[0]
+
+        if sentiment == "Positive":
+            st.success(f"Predicted Sentiment: {sentiment}")
+
+        elif sentiment == "Negative":
+            st.error(f"Predicted Sentiment: {sentiment}")
+
+        else:
+            st.info(f"Predicted Sentiment: {sentiment}")
+
+        st.info(f"Model Accuracy: {st.session_state.accuracy * 100:.2f}%")
 
