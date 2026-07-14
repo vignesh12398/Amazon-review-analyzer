@@ -1,0 +1,7 @@
+numpy~=2.2.6
+streamlit~=1.51.0
+pandas~=2.3.1
+matplotlib~=3.10.6
+emoji~=2.15.0
+wordcloud~=1.9.4
+beautifulsoup4~=4.12.3
